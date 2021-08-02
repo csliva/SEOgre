@@ -3,10 +3,10 @@
 ## Author: Colt Sliva
 ## Date: 7/30/2021
 ##############################
+from re import S
 import streamlit as st
 import pandas as pd
 import numpy as np
-from random import randint
 import plotly.express as px
 import requests
 
@@ -38,15 +38,37 @@ if 'df' not in st.session_state:
 ##############################
 ## Instructions
 ##############################
-st.write(
+c1 = st.beta_container()
+col1, col2 = st.beta_columns(2)
+c2 = st.beta_container()
+c1.write(
     """
     # SEOgre
     ## An SEO tool for data with multiple layers
     """
 )
-
-st.image("https://i.gifer.com/3FOE.gif", width=500)
-
+c1.image("https://i.gifer.com/3FOE.gif", width=500)
+c1.write(
+    """
+    Drag and drop files directly from SEO data sources to overlay the information, with Google updates.
+    """
+)
+with col1:
+    st.write("""
+        ### Suggested Data Sources
+        * Google Search Console Exports
+        * Semrush Keywords or estimated volume
+        * Ahrefs Rank or estimtaed volume
+    """)
+with col2:
+    st.write("""
+        ### Suggested Data Points
+        * Keywords
+        * Clicks
+        * Impressions
+        * Backlinks
+        * PageRank or Domain Rank
+    """)
 ##############################
 ## Inputs
 ##############################
@@ -67,6 +89,7 @@ algos['date'] = pd.to_datetime(algos["date"]).dt.strftime("%m/%d/%Y")
 ## Submit event handler
 ##############################
 if insert and uploaded_files is not None:
+    gif_runner = st.image("https://cdn.dribbble.com/users/1415337/screenshots/10781083/media/0466184625e53796cfeb7d5c5918dec8.gif")
     for file in uploaded_files:
         df = pd.read_csv(file)
         # Loop through each column and prepend the short_id to each column
@@ -90,18 +113,17 @@ if insert and uploaded_files is not None:
         if not temp.empty:
             res["Algo Updates"][index] = 100
 
-
-
-
-    fig = px.line(res, x="date", y=res.drop('Algo Updates', axis=1).columns)
+    fig = px.line(res, x="date", y=res.drop('Algo Updates', axis=1).columns, height=800)
     fig.add_bar(x=res["date"], y=res["Algo Updates"], name="Algo Updates")
     fig.update_xaxes(
         rangeslider_visible=True,
     )
 
-    st.plotly_chart(fig, use_container_width=True, height=1000)
-    
-
+    gif_runner.empty()
+    c2.write("## Charts")
+    c2.plotly_chart(fig, use_container_width=True, height=1000)
+    c2.write("## Algo Updates")
+    c2.write(algos)
 
 
     # upload multiple competitors
