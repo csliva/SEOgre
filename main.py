@@ -38,16 +38,24 @@ if 'df' not in st.session_state:
 ##############################
 ## Instructions
 ##############################
-c1 = st.beta_container()
-col1, col2 = st.beta_columns(2)
-c2 = st.beta_container()
+c1 = st.container()
+col1, col2 = st.columns(2)
+c2 = st.container()
+c1.markdown("""
+<a href='https://ipullrank.com/' style='background-color: rgb(38, 96, 242);
+    width: 100%;
+    display: block;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 2em;'> <img src='https://ipullrank.com/wp-content/uploads/2021/03/Logo-6.png' alt="iPullRank"></a>
+""", unsafe_allow_html=True)
 c1.write(
     """
     # SEOgre
     ## An SEO tool for data with multiple layers
     """
 )
-c1.image("https://i.gifer.com/3FOE.gif", width=500)
 c1.write(
     """
     Drag and drop files directly from SEO data sources to overlay the information, with Google updates.
