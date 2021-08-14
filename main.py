@@ -27,7 +27,6 @@ def joinDF():
 ## State
 ##############################
 st.set_page_config(layout="wide", page_title="SEOgre Data Analysis", page_icon="https://ipullrank.com/wp-content/uploads/2016/07/cropped-Untitled-1-32x32.png")
-st.set_page_config() 
 
 if 'dataset' not in st.session_state:
     st.session_state.dataset = []
