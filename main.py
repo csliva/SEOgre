@@ -129,6 +129,7 @@ if insert and uploaded_files is not None:
                 df['date'] = pd.to_datetime(df["date"]).dt.strftime("%m/%d/%Y")
         st.session_state.dataset.append(df)
     res = joinDF()
+    res.sort_values(by=['date'], inplace=True, ascending=True)
 
     #### Merging our Google updates into the results
     res['Algo Updates'] = 0
