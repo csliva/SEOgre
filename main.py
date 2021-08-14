@@ -113,7 +113,10 @@ if insert and uploaded_files is not None:
     gif_runner = st.image("https://cdn.dribbble.com/users/1415337/screenshots/10781083/media/0466184625e53796cfeb7d5c5918dec8.gif", width=100)
     for file in uploaded_files:
         df = pd.read_csv(file)
-        # Loop through each column and prepend the short_id to each column
+        # fix GSC CTR column
+        if "CTR" in df:
+            df['CTR'] = df['CTR'].str.rstrip('%').astype('float') / 100.0
+        # Loop through each column set min max
         for column in df:
             if "date" not in column.lower():
                 min = df[column].min()
