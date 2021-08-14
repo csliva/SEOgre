@@ -53,29 +53,42 @@ c1.markdown("""
 c1.write(
     """
     # SEOgre
-    ## An SEO tool for data with multiple layers
+    An SEO tool for data with multiple layers
     """
 )
+c1.markdown("""
+<small>Created by <a href="https://twitter.com/SignorColt" target="_blank">@SignorColt</a></small>
+""", unsafe_allow_html=True)
 c1.write(
     """
-    Drag and drop files directly from SEO data sources to overlay the information, with Google updates.
+    ## Instructions
+    1. Drag and drop files directly from SEO data sources to overlay the information, with Google updates.
+    2. Hit Insert to build the chart. If you receive the error, make sure you have a Date column. 
+    3. Use the handles below the chart to change the timeframe
+    4. Click metrics on the legend to hide and show them
+    5. Hover over the bright columns to see which date a Google update happened. You can find the list of updates below the fold.
+    6. Screenshot or save the chart
+    7. Refresh the page to reset it.
     """
 )
 with col1:
     st.write("""
         ### Suggested Data Sources
-        * Google Search Console Exports
-        * Semrush Keywords or estimated volume
-        * Ahrefs Rank or estimtaed volume
+        * Google Search Console
+        * Semrush
+        * Ahrefs
+        * Analytics
+        * Rank Trackers
     """)
 with col2:
     st.write("""
         ### Suggested Data Points
-        * Keywords
-        * Clicks
-        * Impressions
-        * Backlinks
-        * PageRank or Domain Rank
+        * Keyword Distribution
+        * Clicks, Impressions, or Position
+        * Backlinks or Linking Root Domain Count
+        * PageRank or Domain Rank or Relative Rank
+        * Share of Voice
+        * Conversions
     """)
 ##############################
 ## Inputs
@@ -97,7 +110,7 @@ algos['date'] = pd.to_datetime(algos["date"]).dt.strftime("%m/%d/%Y")
 ## Submit event handler
 ##############################
 if insert and uploaded_files is not None:
-    gif_runner = st.image("https://cdn.dribbble.com/users/1415337/screenshots/10781083/media/0466184625e53796cfeb7d5c5918dec8.gif")
+    gif_runner = st.image("https://cdn.dribbble.com/users/1415337/screenshots/10781083/media/0466184625e53796cfeb7d5c5918dec8.gif", width=100)
     for file in uploaded_files:
         df = pd.read_csv(file)
         # Loop through each column and prepend the short_id to each column
@@ -131,9 +144,9 @@ if insert and uploaded_files is not None:
     c2.write("## Charts")
     c2.plotly_chart(fig, use_container_width=True, height=1000)
     c2.write("## Algo Updates")
-    c2.write(algos)
-
-
-    # upload multiple competitors
-    # upload multiple metrics
-    # the key to join against is date
+    for index, row in algos.iterrows():
+        c2.markdown(f"""
+            <b>{row['date']}</b>
+            <a href="{row['source']}" style="margin: 1em 0;">{row['title']}</a>
+            <span>( {row['status']} )</span><br>
+        """, unsafe_allow_html=True)
