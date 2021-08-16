@@ -129,14 +129,16 @@ if insert and uploaded_files is not None:
                 df['date'] = pd.to_datetime(df["date"]).dt.strftime("%m/%d/%Y")
         st.session_state.dataset.append(df)
     res = joinDF()
-    res.sort_values(by=['date'], inplace=True, ascending=True)
-
     #### Merging our Google updates into the results
     res['Algo Updates'] = 0
     for index, row in res.iterrows():
         temp = algos.loc[row['date'] == algos["date"]]
         if not temp.empty:
             res["Algo Updates"][index] = 100
+
+
+    res['date'] = pd.to_datetime(res['date']) #guarantee that the date column is a datetime
+    res.sort_values(by=['date'], inplace=True, ascending=True) # sort by date
 
     fig = px.line(res, x="date", y=res.drop('Algo Updates', axis=1).columns, height=800)
     fig.add_bar(x=res["date"], y=res["Algo Updates"], name="Algo Updates")
