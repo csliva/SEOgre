@@ -36,12 +36,14 @@ if 'df' not in st.session_state:
     
 
 ##############################
-## Instructions
+## Header
 ##############################
+t1 = st.container()
+c0 = st.container()
 c1 = st.container()
 col1, col2 = st.columns(2)
 c2 = st.container()
-c1.markdown("""
+t1.markdown("""
 <a href='https://ipullrank.com/' style='background-color: rgb(38, 96, 242);
     width: 100%;
     display: block;
@@ -50,16 +52,28 @@ c1.markdown("""
     font-weight: bold;
     padding: 2em;'> <img src='https://ipullrank.com/wp-content/uploads/2021/03/Logo-6.png' alt="iPullRank"></a>
 """, unsafe_allow_html=True)
-c1.write(
+t1.write(
     """
     # SEOgre
     An SEO tool for data with multiple layers
     """
 )
-c1.markdown("""
+t1.markdown("""
 <small>Created by <a href="https://twitter.com/SignorColt" target="_blank">@SignorColt</a></small>
 """, unsafe_allow_html=True)
-c1.write(
+
+
+##############################
+## Inputs
+##############################
+form = c1.form(key='my_form')
+uploaded_files = form.file_uploader("Choose files", accept_multiple_files=True)
+insert = form.form_submit_button(label='Insert')
+
+##############################
+## Instructions
+##############################
+col1.write(
     """
     ## Instructions
     1. Drag and drop files directly from SEO data sources to overlay the information, with Google updates.
@@ -71,6 +85,10 @@ c1.write(
     7. Refresh the page to reset it.
     """
 )
+col2.markdown("""
+<h2>Video Guide</h2>
+<p><a href="https://ipullrank.com/layered-seo-analysis-for-happy-clients?wvideo=co29m9280c" target="_blank"><img src="https://embed-fastly.wistia.com/deliveries/511fedf7e7aaebbbb1d7b3c76079eec8610bafd8.jpg?image_play_button_size=2x&amp;image_crop_resized=960x540&amp;image_play_button=1&amp;image_play_button_color=1e71e7e0" width="400" height="225" style="width: 400px; height: 225px;"></a></p><p><a href="https://ipullrank.com/layered-seo-analysis-for-happy-clients?wvideo=co29m9280c">Layered SEO Analysis for Happy Clients | iPullRank</a></p>
+""", unsafe_allow_html=True)
 with col1:
     st.write("""
         ### Suggested Data Sources
@@ -90,12 +108,6 @@ with col2:
         * Share of Voice
         * Conversions
     """)
-##############################
-## Inputs
-##############################
-form = st.form(key='my_form')
-uploaded_files = form.file_uploader("Choose files", accept_multiple_files=True)
-insert = form.form_submit_button(label='Insert')
 
 
 ##############################
@@ -147,11 +159,11 @@ if insert and uploaded_files is not None:
     )
 
     gif_runner.empty()
-    c2.write("## Charts")
-    c2.plotly_chart(fig, use_container_width=True, height=1000)
-    c2.write("## Algo Updates")
+    c0.write("## Charts")
+    c0.plotly_chart(fig, use_container_width=True, height=1000)
+    c0.write("## Algo Updates")
     for index, row in algos.iterrows():
-        c2.markdown(f"""
+        c0.markdown(f"""
             <b>{row['date']}</b>
             <a href="{row['source']}" style="margin: 1em 0;">{row['title']}</a>
             <span>( {row['status']} )</span><br>
